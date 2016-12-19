@@ -45,33 +45,45 @@ public class RegisterActivity extends AppCompatActivity {
 
 //                new LoadDatabase(getApplicationContext(), DatabaseHelper.TABLE_NAME);
 
-                if (LoadDatabase.memberList.contains(strUsername)){
 
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(RegisterActivity.this);
-                    dialog.setTitle("Registration failed!");
-                    dialog.setMessage("Username already exists");
-                    dialog.setCancelable(false);
-                    dialog.show();
+                if (!"".equals(strName) && !"".equals(strUsername) && !"".equals(strPassword)) {
 
-                }else if(!"".equals(strName) && !"".equals(strUsername) &&!"".equals(strPassword)) {
-                    DatabaseHelper helper = new DatabaseHelper(RegisterActivity.this);
-                    SQLiteDatabase db = helper.getWritableDatabase();
+                    Boolean status = false;
 
-                    ContentValues cv = new ContentValues();
-                    cv.put(DatabaseHelper.COL_NAME, strName);
-                    cv.put(DatabaseHelper.COL_USERNAME, strUsername);
-                    cv.put(DatabaseHelper.COL_PASSWORD, strPassword);
+                    for (int i = 0; i < LoadDatabase.memberList.size(); i++) {
 
-                    db.insert(DatabaseHelper.TABLE_NAME, null, cv);
+                        String strGetUsername = LoadDatabase.memberList.get(i).getUsername();
 
-                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                    startActivity(intent);
+                        if (strGetUsername.equals(strUsername)) {
+                            AlertDialog.Builder dialog = new AlertDialog.Builder(RegisterActivity.this);
+                            dialog.setTitle("Registration failed!");
+                            dialog.setMessage("Username already exists");
+                            dialog.setCancelable(true);
+                            dialog.show();
+                            status = true;
+                            break;
 
-                }else {
-                    Toast.makeText(getApplicationContext(),"please input an information to complete",Toast.LENGTH_LONG).show();
+                        }
+                    }
+                    if (!status) {
+                        DatabaseHelper helper = new DatabaseHelper(RegisterActivity.this);
+                        SQLiteDatabase db = helper.getWritableDatabase();
+
+                        ContentValues cv = new ContentValues();
+                        cv.put(DatabaseHelper.COL_NAME, strName);
+                        cv.put(DatabaseHelper.COL_USERNAME, strUsername);
+                        cv.put(DatabaseHelper.COL_PASSWORD, strPassword);
+
+                        db.insert(DatabaseHelper.TABLE_NAME, null, cv);
+
+                        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                    }
+
+
+                } else {
+                    Toast.makeText(getApplicationContext(), "please input an information to complete", Toast.LENGTH_LONG).show();
                 }
-
-
 
 
             }

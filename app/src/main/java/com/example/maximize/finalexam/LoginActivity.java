@@ -51,22 +51,22 @@ public class LoginActivity extends AppCompatActivity {
                 String strPassword = edt_password.getText().toString().trim();
 
                 for (int i = 0; i < LoadDatabase.memberList.size(); i++) {
-                    if (LoadDatabase.memberList.get(i).getUsername().toString().equals(strUsername) &&
-                            LoadDatabase.memberList.get(i).getPassword().toString().equals(strPassword)) {
+                    if (LoadDatabase.memberList.get(i).getUsername().equals(strUsername) &&
+                            LoadDatabase.memberList.get(i).getPassword().equals(strPassword)) {
 
-                        status = true;
+                       // status = true;    ยกเลิกการใช้เนื่องจากสั่ง intent และ break แล้ว ไม่จำเป็นต้องใช้ status
 
                         Intent j = new Intent(LoginActivity.this, MainActivity.class);
-                        j.putExtra("name", LoadDatabase.memberList.get(i).getNames().toString());
+                        j.putExtra("name", LoadDatabase.memberList.get(i).getNames());
                         startActivity(j);
                         break;
 
                     }
                 }
 
-                if(!status){
+//                if(!status){  ไม่จำเป็นต้องเช็ค หาก วนลูป for จนครบแล้วไม่เข้า if แสดงว่า username หรือ password ไม่ตรงกันหรือไม่มี
                     Toast.makeText(getApplicationContext(),"Invalid username or password",Toast.LENGTH_LONG).show();
-                }
+//                }
             }
         });
     }
